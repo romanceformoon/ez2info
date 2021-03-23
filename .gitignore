@@ -1,1 +1,3 @@
 static/assets/img/song
+*.db
+test.py

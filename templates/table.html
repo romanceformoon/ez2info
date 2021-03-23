@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-	<title>Squadfree Bootstrap Template - Index</title>
+	<title>EZ2INFO</title>
 	<meta content="" name="description">
 	<meta content="" name="keywords">
 
@@ -53,41 +53,13 @@
 			<ul>
 			<li class="dropdown"><a href="#"><span>Difficulty Table</span> <i class="bi bi-chevron-down"></i></a>
 				<ul>
-				<li class="dropdown"><a href="#"><span>4 Key</span> <i class="bi bi-chevron-right"></i></a>
-					<ul>
-					<li><a href="#">Level 16</a></li>
-					<li><a href="#">Level 17</a></li>
-					<li><a href="#">Level 18</a></li>
-					<li><a href="#">Level 19</a></li>
-					<li><a href="#">Level 20</a></li>
-					</ul>
+				<li class="dropdown"><a href="/table?key=4"><span>4 Key</span></a>
 				</li>
-				<li class="dropdown"><a href="#"><span>5 Key</span> <i class="bi bi-chevron-right"></i></a>
-					<ul>
-					<li><a href="#">Level 16</a></li>
-					<li><a href="#">Level 17</a></li>
-					<li><a href="#">Level 18</a></li>
-					<li><a href="#">Level 19</a></li>
-					<li><a href="#">Level 20</a></li>
-					</ul>
+				<li class="dropdown"><a href="/table?key=5"><span>5 Key</span></a>
 				</li>
-				<li class="dropdown"><a href="#"><span>6 Key</span> <i class="bi bi-chevron-right"></i></a>
-					<ul>
-					<li><a href="#">Level 16</a></li>
-					<li><a href="#">Level 17</a></li>
-					<li><a href="#">Level 18</a></li>
-					<li><a href="#">Level 19</a></li>
-					<li><a href="#">Level 20</a></li>
-					</ul>
+				<li class="dropdown"><a href="/table?key=6"><span>6 Key</span></a>
 				</li>
-				<li class="dropdown"><a href="#"><span>8 Key</span> <i class="bi bi-chevron-right"></i></a>
-					<ul>
-					<li><a href="#">Level 16</a></li>
-					<li><a href="#">Level 17</a></li>
-					<li><a href="#">Level 18</a></li>
-					<li><a href="#">Level 19</a></li>
-					<li><a href="#">Level 20</a></li>
-					</ul>
+				<li class="dropdown"><a href="/table?key=8"><span>8 Key</span></a>
 				</li>
 				</ul>
 			</li>
@@ -107,7 +79,7 @@
 		<div class="container">
 
 		<div class="section-title" data-aos="fade-in" data-aos-delay="100">
-			<h2>4 Key</h2>
+			<h2>{{ whatKey }} Key</h2>
 			<p>서열표는 절대적인 기준이 아니며 개인에 따라 느끼는 차이가 존재할 수 있습니다.</p>
 		</div>
 		
@@ -115,7 +87,7 @@
 			<div class="col-lg-12 d-flex justify-content-center">
 			<ul id="portfolio-flters">
 				<li data-filter="#level16" class="filter-active">Lv 16</li>
-				<li data-filter="#level17" class="lv18">Lv 17</li>
+				<li data-filter="#level17" class="lv17">Lv 17</li>
 				<li data-filter="#level18" class="lv18">Lv 18</li>
 				<li data-filter="#level19" class="lv19">Lv 19</li>
 				<li data-filter="#level20" class="lv20">Lv 20</li>
@@ -126,119 +98,114 @@
 		<div class="section-title" data-aos="fade-in" data-aos-delay="100">
 			<h2>최상급</h2>
 		</div>
+		<div class="row portfolio-container" data-aos="fade-up" id="veryhard">
 		{% for key, value in result.items() %}
 			{% if value == "veryhard" %}
-				<div class="row portfolio-container" data-aos="fade-up" id="veryhard">
 					{% for key2, value2 in level.items() %}
 						{% if key2 == key %}
 							<div class="col-lg-2 col-md-6 portfolio-item" id={{ "level" ~ value2 }}>
 								<div class="portfolio-wrap">
 									<img src="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid" alt="">
 									<div class="portfolio-links">
-										<a href="https://www.youtube.com/watch?v=Zvt7_ISsFMA" class="portfolio-lightbox"><i class="bi bi-collection-play-fill"></i></a>
-										<a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+										<a href="{{ "/detail?song=" ~ key ~ "&key=" ~ whatKey}}"><i class="bx bx-plus"></i></a>
 									</div>
 								</div>
 							</div>
 						{% endif %}
 					{% endfor %}
-				</div>
 			{% endif %}
 		{% endfor %}
-		
+		</div>
 		
 		<div class="section-title" data-aos="fade-in" data-aos-delay="100">
 			<h2>상급</h2>
 		</div>
+		<div class="row portfolio-container2" data-aos="fade-up" id="hard">
 		{% for key, value in result.items() %}
 			{% if value == "hard" %}
-				<div class="row portfolio-container2" data-aos="fade-up" id="hard">
 					{% for key2, value2 in level.items() %}
 						{% if key2 == key %}
 							<div class="col-lg-2 col-md-6 portfolio-item" id={{ "level" ~ value2 }}>
 								<div class="portfolio-wrap">
 									<img src="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid" alt="">
 									<div class="portfolio-links">
-										<a href="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>
-										<a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+										<a href="{{ "/detail?song=" ~ key ~ "&key=" ~ whatKey}}"><i class="bx bx-plus"></i></a>
 									</div>
 								</div>
 							</div>
 						{% endif %}
 					{% endfor %}
-				</div>
 			{% endif %}
 		{% endfor %}
+		</div>
 
 		<div class="section-title" data-aos="fade-in" data-aos-delay="100">
 			<h2>중급</h2>
 		</div>
+		<div class="row portfolio-container3" data-aos="fade-up" id="normal">
 		{% for key, value in result.items() %}
 			{% if value == "normal" %}
-				<div class="row portfolio-container3" data-aos="fade-up" id="normal">
 					{% for key2, value2 in level.items() %}
 						{% if key2 == key %}
 							<div class="col-lg-2 col-md-6 portfolio-item" id={{ "level" ~ value2 }}>
 								<div class="portfolio-wrap">
 									<img src="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid" alt="">
 									<div class="portfolio-links">
-										<a href="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>
-										<a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+										<a href="{{ "/detail?song=" ~ key ~ "&key=" ~ whatKey}}"><i class="bx bx-plus"></i></a>
 									</div>
 								</div>
 							</div>
 						{% endif %}
 					{% endfor %}
-				</div>
 			{% endif %}
 		{% endfor %}
+		</div>
 
 		<div class="section-title" data-aos="fade-in" data-aos-delay="100">
 			<h2>하급</h2>
 		</div>
+		<div class="row portfolio-container4" data-aos="fade-up" id="easy">
 		{% for key, value in result.items() %}
 			{% if value == "easy" %}
-				<div class="row portfolio-container4" data-aos="fade-up" id="easy">
 					{% for key2, value2 in level.items() %}
 						{% if key2 == key %}
 							<div class="col-lg-2 col-md-6 portfolio-item" id={{ "level" ~ value2 }}>
 								<div class="portfolio-wrap">
 									<img src="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid" alt="">
 									<div class="portfolio-links">
-										<a href="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>
-										<a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+										<a href="{{ "/detail?song=" ~ key ~ "&key=" ~ whatKey}}"><i class="bx bx-plus"></i></a>
 									</div>
 								</div>
 							</div>
 						{% endif %}
 					{% endfor %}
-				</div>
 			{% endif %}
 		{% endfor %}
+		</div>
 
 		<div class="section-title" data-aos="fade-in" data-aos-delay="100">
 			<h2>최하급</h2>
 		</div>
+		<div class="row portfolio-container5" data-aos="fade-up" id="veryeasy">
 		{% for key, value in result.items() %}
 			{% if value == "veryeasy" %}
-				<div class="row portfolio-container5" data-aos="fade-up" id="veryeasy">
 					{% for key2, value2 in level.items() %}
 						{% if key2 == key %}
 							<div class="col-lg-2 col-md-6 portfolio-item" id={{ "level" ~ value2 }}>
 								<div class="portfolio-wrap">
 									<img src="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid" alt="">
 									<div class="portfolio-links">
-										<a href="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>
-										<a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+										<a href="{{ "/detail?song=" ~ key ~ "&key=" ~ whatKey}}"><i class="bx bx-plus"></i></a>
 									</div>
 								</div>
 							</div>
 						{% endif %}
 					{% endfor %}
-				</div>
 			{% endif %}
 		{% endfor %}
 		</div>
+
+	</div>
 
 	<script type="text/javascript"> 
 		$(function() {
@@ -250,6 +217,10 @@
 	</script>
 
 	<script type="text/javascript">
+		$('li.lv17').click(function(){
+			$('div#level17').show();
+		})
+
 		$('li.lv18').click(function(){
 			$('div#level18').show();
 		})
@@ -262,14 +233,14 @@
 			$('div#level20').show();
 		})
 	</script>
-
+	
 	</section><!-- End Portfolio Section -->
 
 	<!-- ======= Footer ======= -->
 	<footer id="footer">
 		<div class="container">
 		<div class="copyright">
-			&copy; Copyright <strong><span>Squadfree</span></strong>. All Rights Reserved
+			&copy; Copyright <strong><span>2021. <a href="https://github.com/romanceformoon">JungWoo Lee</a></span></strong>. All Rights Reserved
 		</div>
 		<div class="credits">
 			<!-- All the links in the footer should remain intact. -->
