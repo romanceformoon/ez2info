@@ -79,7 +79,16 @@
 		<div class="container">
 
 		<div class="section-title" data-aos="fade-in" data-aos-delay="100">
-			<h2>{{ whatKey }} Key</h2>
+			{% if whatKey == "4" %}
+				<img src="{{ url_for('static', filename='assets/img/4.png') }}">
+			{% elif whatKey == "5" %}
+				<img src="{{ url_for('static', filename='assets/img/5.png') }}">
+			{% elif whatKey == "6" %}
+				<img src="{{ url_for('static', filename='assets/img/6.png') }}">
+			{% elif whatKey == "8" %}
+				<img src="{{ url_for('static', filename='assets/img/8.png') }}">
+			{% endif %}
+			<!-- <h2>{{ whatKey }} Key</h2> -->
 			<p>서열표는 절대적인 기준이 아니며 개인에 따라 느끼는 차이가 존재할 수 있습니다.</p>
 		</div>
 		

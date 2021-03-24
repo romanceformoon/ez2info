@@ -1,6 +1,9 @@
 # routes.py
 from flask import *
 import sqlite3
+from werkzeug.utils import secure_filename
+import os
+import ocr
 
 app = Flask(__name__)
 
@@ -208,6 +211,16 @@ def ranking_add():
 
         return render_template('success.html')
 
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if request.method == 'POST':
+        f = request.files['file']
+        filename = secure_filename(f.filename)
+        # os.makedirs('static/upload')
+        f.save(os.path.join('static/upload', filename))
+        result = ocr.work(os.path.join('static/upload', filename))
+        return result
+
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=9350)
+    app.run()

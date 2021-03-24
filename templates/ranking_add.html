@@ -75,6 +75,10 @@
             <div class="portfolio-info">
               <h3>랭킹 등록</h3>
               <ul>
+				<form action="/upload" method="POST" enctype="multipart/form-data">
+					<input type="file" name="file">
+					<input type="submit">
+				</form>
                 <form action="/add" method="POST">
 					닉네임 : <input type="text" name="nickname" required/> <br />
 					Kool : <input type="text" name="kool" required/> <br />
