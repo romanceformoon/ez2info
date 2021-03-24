@@ -39,50 +39,50 @@ def preProcessJudge(image):
     return canny
 
 
-def image2Text(param, param2, config, lang=None):
+def image2Text(param, param2, config, judge, image, lang=None):
     i = 1
     result = pytesseract.image_to_string(param, config=config, lang=lang)
     if len(cleanText(result)) == 0:
         result = pytesseract.image_to_string(param2, config=config, lang=lang)
 
     while len(cleanText(result)) == 0 and i < 50:
-        if param == croppedKool:
+        if judge == "kool":
             coord = ((kool[0] - i), (kool[1] - i),
                      (kool[2] + i), (kool[3] + i))
-            temp = image1.crop(coord)
+            temp = image.crop(coord)
             result = pytesseract.image_to_string(
                 temp, config=config, lang=lang)
             i += 1
 
-        elif param == croppedCool:
+        elif judge == "cool":
             coord = ((cool[0] - i), (cool[1] - i),
                      (cool[2] + i), (cool[3] + i))
-            temp = image1.crop(coord)
+            temp = image.crop(coord)
             result = pytesseract.image_to_string(
                 temp, config=config, lang=lang)
             i += 1
 
-        elif param == croppedGood:
+        elif judge == "good":
             coord = ((good[0] - i), (good[1] - i),
                      (good[2] + i), (good[3] + i))
-            temp = image1.crop(coord)
+            temp = image.crop(coord)
             result = pytesseract.image_to_string(
                 temp, config=config, lang=lang)
             i += 1
             # print(i)
 
-        elif param == croppedMiss:
+        elif judge == "miss":
             coord = ((miss[0] - i), (miss[1] - i),
                      (miss[2] + i), (miss[3] + i))
-            temp = image1.crop(coord)
+            temp = image.crop(coord)
             result = pytesseract.image_to_string(
                 temp, config=config, lang=lang)
             i += 1
 
-        elif param == croppedFail:
+        elif judge == "fail":
             coord = ((fail[0] - i), (fail[1] - i),
                      (fail[2] + i), (fail[3] + i))
-            temp = image1.crop(coord)
+            temp = image.crop(coord)
             result = pytesseract.image_to_string(
                 temp, config=config, lang=lang)
             i += 1
@@ -144,27 +144,27 @@ def work(filename):
     print("Nickname 인식결과: ", cleanText(result))
 
     result = image2Text(croppedKool, preProcessJudge('static/upload/crop/kool.png'),
-                        '--psm 6 -c tessedit_char_whitelist=0123456789')
+                        '--psm 6 -c tessedit_char_whitelist=0123456789', judge="kool", image=image1)
     print("Kool 인식결과: ", cleanText(result))
     ret['kool'] = cleanText(result)
 
     result = image2Text(croppedCool, preProcessJudge('static/upload/crop/cool.png'),
-                        '--psm 6 -c tessedit_char_whitelist=0123456789')
+                        '--psm 6 -c tessedit_char_whitelist=0123456789', judge="cool", image=image1)
     print("Cool 인식결과: ", cleanText(result))
     ret['cool'] = cleanText(result)
 
     result = image2Text(croppedGood, preProcessJudge('static/upload/crop/good.png'),
-                        '--psm 6 -c tessedit_char_whitelist=0123456789')
+                        '--psm 6 -c tessedit_char_whitelist=0123456789', judge="good", image=image1)
     print("Good 인식결과: ", cleanText(result))
     ret['good'] = cleanText(result)
 
     result = image2Text(croppedMiss, preProcessJudge('static/upload/crop/miss.png'),
-                        '--psm 6 -c tessedit_char_whitelist=0123456789')
+                        '--psm 6 -c tessedit_char_whitelist=0123456789', judge="miss", image=image1)
     print("Miss 인식결과: ", cleanText(result))
     ret['miss'] = cleanText(result)
 
     result = image2Text(croppedFail, preProcessJudge('static/upload/crop/fail.png'),
-                        '--psm 6 -c tessedit_char_whitelist=0123456789')
+                        '--psm 6 -c tessedit_char_whitelist=0123456789', judge="fail", image=image1)
     print("Fail 인식결과: ", cleanText(result))
     ret['fail'] = cleanText(result)
 

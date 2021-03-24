@@ -2,3 +2,4 @@ static/assets/img/song
 static/upload
 *.db
 test.py
+__pycache__
