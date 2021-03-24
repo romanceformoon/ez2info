@@ -4,6 +4,9 @@ import sqlite3
 from werkzeug.utils import secure_filename
 import os
 import ocr
+import random
+import string
+from difflib import SequenceMatcher
 
 app = Flask(__name__)
 
@@ -74,7 +77,7 @@ def detail():
             temp = row[10]
             if temp not in already_list:
                 ranking[rank] = [row[2], row[3], row[4], row[5], row[6],
-                                 row[7], row[8], row[9], row[10], row[11], row[12], row[0]]
+                                 row[7], row[8], row[9], row[10], row[11], row[12], row[0], row[14]]
                 already_list.append(row[10])
                 rank += 1
 
@@ -118,7 +121,7 @@ def ranking():
             temp = row[10]
             if temp not in already_list:
                 ranking[rank] = [row[2], row[3], row[4], row[5], row[6],
-                                 row[7], row[8], row[9], row[10], row[11], row[12], row[0]]
+                                 row[7], row[8], row[9], row[10], row[11], row[12], row[0], row[14]]
                 already_list.append(row[10])
                 rank += 1
 
@@ -195,15 +198,16 @@ def ranking_add():
         acc = request.form['rate']
         combo = request.form['combo']
         nickname = request.form['nickname']
+        filename = request.form['filename']
 
         conn = sqlite3.connect("ranking.db")
         c = conn.cursor()
 
         c.executemany(
-            'INSERT INTO ranking VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            'INSERT INTO ranking VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [
                 (key, song, kool, cool, good, miss, fail, score,
-                 acc, combo, nickname, "", "", "")
+                 acc, combo, nickname, "", "", "", filename)
             ]
         )
         conn.commit()
@@ -211,16 +215,32 @@ def ranking_add():
 
         return render_template('success.html')
 
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if request.method == 'POST':
+        song = request.form['song']
+        key = request.form['key']
         f = request.files['file']
-        filename = secure_filename(f.filename)
-        # os.makedirs('static/upload')
+        filename = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                           for _ in range(8)) + secure_filename(f.filename)
+
         f.save(os.path.join('static/upload', filename))
         result = ocr.work(os.path.join('static/upload', filename))
-        return result
+
+        result['rate'] = round((int(result['score']) -
+                                int(result['combo'])) / 1100000 * 100, 2)
+        print(result['rate'])
+
+        print(song.upper(), result['song'].upper())
+        print(SequenceMatcher(None, song.upper(),
+              result['song'].upper()).ratio())
+        if SequenceMatcher(None, song.upper(), result['song'].upper()).ratio() > 0.6:
+            return render_template('data_check.html', result=result, filename=filename, song=song, key=key)
+        else:
+            os.remove(os.path.join('static/upload', filename))
+            return "곡명이 일치하지 않습니다."
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=9350)

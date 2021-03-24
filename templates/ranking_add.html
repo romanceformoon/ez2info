@@ -67,6 +67,19 @@
       </div>
     </section><!-- Breadcrumbs Section -->
 
+	<script>
+
+		$(document).ready(function() {
+
+		$('#loading').hide();
+		$('#trans').submit(function(){
+			$('#loading').show();
+			return true;
+			});
+		});
+
+	</script>
+
     <!-- ======= Portfolio Details Section ======= -->
     <section id="portfolio-details" class="portfolio-details">
       <div class="container">
@@ -75,10 +88,19 @@
             <div class="portfolio-info">
               <h3>랭킹 등록</h3>
               <ul>
-				<form action="/upload" method="POST" enctype="multipart/form-data">
+				<form id="trans" action="/upload" method="POST" enctype="multipart/form-data">
 					<input type="file" name="file">
+					<input type="hidden" name="song" value={{ song }} required>
+					<input type="hidden" name="key" value={{ key }} required>
 					<input type="submit">
 				</form>
+				
+				<div id="loading" style="margin-left: 0px;">
+					<img src="{{ url_for('static', filename='assets/img/loading.gif') }}">
+					<p>Waiting for a seconds..</p>
+				</div>
+
+				<!--
                 <form action="/add" method="POST">
 					닉네임 : <input type="text" name="nickname" required/> <br />
 					Kool : <input type="text" name="kool" required/> <br />
@@ -93,11 +115,16 @@
 					<input type="hidden" name="key" value={{ key }} required>
                 	<input type="submit" value="등록">
 				</form>
+				-->
+
               </ul>
             </div>
 
         </div>
       </div>
+
+	   
+
     </section><!-- End Portfolio Details Section -->
 
   </main><!-- End #main -->

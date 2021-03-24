@@ -13,6 +13,7 @@ fail = (1180, 532, 1257, 572)
 score = (1445, 640, 1650, 690)
 resize = (0, 50, 1680, 1000)
 nick = (245, 47, 445, 94)
+combo = (1178, 655, 1264, 695)
 
 
 def cleanText(readData):
@@ -123,6 +124,7 @@ def work(filename):
         croppedFail = image1.crop(fail)
         croppedScore = image1.crop(score)
         croppedNickname = image1.crop(nick)
+        croppedCombo = image1.crop(combo)
 
     croppedSongName.save('static/upload/crop/name.png')
     croppedKool.save('static/upload/crop/kool.png')
@@ -131,6 +133,7 @@ def work(filename):
     croppedMiss.save('static/upload/crop/miss.png')
     croppedFail.save('static/upload/crop/fail.png')
     croppedNickname.save('static/upload/crop/nick.png')
+    croppedCombo.save('static/upload/crop/combo.png')
 
     ret = {}
     print(filename)
@@ -171,7 +174,12 @@ def work(filename):
     result = pytesseract.image_to_string(
         croppedScore, config='--psm 6 -c tessedit_char_whitelist=0123456789')
     print("Score 인식결과: ", cleanText(result))
-    print('--------------------------------')
     ret['score'] = cleanText(result)
+
+    result = pytesseract.image_to_string(
+        croppedCombo, config='--psm 6 -c tessedit_char_whitelist=0123456789')
+    print("MaxCombo 인식결과: ", cleanText(result))
+    print('--------------------------------')
+    ret['combo'] = cleanText(result)
 
     return ret

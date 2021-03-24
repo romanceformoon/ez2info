@@ -101,7 +101,8 @@
               <ul>
                 {% for key, value in ranking.items() %}
                   <li> 
-                    <a class="tip">
+                    <div class="portfolio-links">
+                    <a href={{ url_for('static', filename='upload/' ~ value[12]) }} data-gallery="portfolioGallery" class="portfolio-lightbox tip">
                       <strong>{{ key }}위 - {{ value[8] }}: </strong>{{ value[5] }}
                       <span>
                       Kool: {{ value[0] }}<br>
@@ -113,6 +114,7 @@
                       MaxCombo: {{ value[7] }}
                       </span>
                     </a>
+                    </div>
                   </li>
                 {% endfor %}
               </ul>

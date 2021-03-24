@@ -55,38 +55,37 @@
 
 
   <main id="main">
-
-    <!-- ======= Breadcrumbs Section ======= -->
-    <section class="breadcrumbs">
-      <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center">
-          <h2>{{ name }} {{ key }} KEY {{ dif }}</h2>
-        </div>
-
-      </div>
-    </section><!-- Breadcrumbs Section -->
-
     <!-- ======= Portfolio Details Section ======= -->
     <section id="portfolio-details" class="portfolio-details">
       <div class="container">
         <div class="row gy-4">
 
             <div class="portfolio-info">
-              <h3>랭킹</h3>
+			<h3>기록 추출 완료</h3>
               <ul>
-                {% for key, value in ranking.items() %}
+				<form action="/add" method="POST">
+				닉네임: <input type="text" name="nickname" required/> <br />
+                {% for key, value in result.items() %}
                   <li>
-					  <div class="portfolio-links">
-					<a href={{ url_for('static', filename='upload/' ~ value[12]) }} data-gallery="portfolioGallery" class="portfolio-lightbox">
-                    	<strong>{{ key }}위 - {{ value[8] }}: </strong>{{ value[5] }}
-					</a>
-					</div>
+                    <strong>{{ key }}: {{ value }} </strong>
                   </li>
                 {% endfor %}
               </ul>
+				<p>등록하시겠습니까?</p>
+				<input type="hidden" name="kool" value={{ result['kool'] }} required/>
+                <input type="hidden" name="cool" value={{ result['cool'] }} required/>
+				<input type="hidden" name="good" value={{ result['good'] }} required/>
+				<input type="hidden" name="miss" value={{ result['miss'] }} required/>
+				<input type="hidden" name="fail" value={{ result['fail'] }} required/>
+				<input type="hidden" name="score" value={{ result['score'] }} required/>
+				<input type="hidden" name="rate" value={{ result['rate'] }} required/>
+				<input type="hidden" name="combo"  value={{ result['combo'] }} required/>
+				<input type="hidden" name="song" value={{ song }} required>
+				<input type="hidden" name="key" value={{ key }} required>
+				<input type="hidden" name="filename" value={{ filename }} required>
+                <input type="submit">
+			</form>
             </div>
-
         </div>
       </div>
     </section><!-- End Portfolio Details Section -->
