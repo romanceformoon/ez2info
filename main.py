@@ -229,9 +229,10 @@ def upload_file():
 
         f.save(os.path.join('static/upload', filename))
         result = ocr.work(os.path.join('static/upload', filename))
-
-        result['rate'] = round((int(result['score']) -
-                                int(result['combo'])) / 1100000 * 100, 2)
+        num_notes = result['kool'] + result['cool'] + result['good'] \
+            + result['miss'] + result['fail']
+        result['rate'] = round(int(result['score']) / (1100000 + int(num_notes)), 4) * 100
+        
         print(result['rate'])
 
         print(song.upper(), result['song'].upper())
