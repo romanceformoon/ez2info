@@ -223,7 +223,7 @@ def upload_file():
         key = request.form['key']
         f = request.files['file']
         filename = ''.join(random.choice(string.ascii_uppercase + string.digits)
-                           for _ in range(8)) + secure_filename(f.filename)
+                           for _ in range(8))
 
         f.save(os.path.join('static/upload', filename))
         result = ocr.work(os.path.join('static/upload', filename))
