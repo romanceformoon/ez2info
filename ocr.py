@@ -11,9 +11,9 @@ good = (1180, 452, 1270, 492)
 miss = (1180, 492, 1270, 532)
 fail = (1180, 532, 1257, 572)
 score = (1445, 640, 1650, 690)
-resize = (0, 50, 1680, 1000)
 nick = (245, 47, 445, 94)
 combo = (1178, 655, 1264, 695)
+key = (35, 136, 144, 243)
 
 
 def cleanText(readData):
@@ -96,8 +96,17 @@ def work(filename):
     # print(filelist)
 
     initialCheck = Image.open(filename)
+    # resize = (0, 50, 1680, 1000)
+    i, a, b = 0, 0, 0
     # print(initialCheck.size)
-    if initialCheck.size[1] == 1050:
+    if not (initialCheck.size[0] // 16 == initialCheck.size[1] // 9):
+        height = initialCheck.size[1]
+        while (height / 9 != initialCheck.size[0] / 16):
+            height -= 1
+        print(height)
+        crop_letter_box = (initialCheck.size[1] - height) // 2
+        resize = (0, crop_letter_box,
+                  initialCheck.size[0], initialCheck.size[1] - crop_letter_box)
         print("Resolution Checkpoint.")
         print("Image Crop Start.")
         resizeImage = initialCheck.crop(resize)
