@@ -222,8 +222,10 @@ def upload_file():
         song = request.form['song']
         key = request.form['key']
         f = request.files['file']
+        name, ext = os.path.splitext(f.filename)
+
         filename = ''.join(random.choice(string.ascii_uppercase + string.digits)
-                           for _ in range(8))
+                           for _ in range(8)) + ext
 
         f.save(os.path.join('static/upload', filename))
         result = ocr.work(os.path.join('static/upload', filename))
