@@ -46,7 +46,7 @@ def image2Text(param, param2, config, judge, image, lang=None):
     if len(cleanText(result)) == 0:
         result = pytesseract.image_to_string(param2, config=config, lang=lang)
 
-    while len(cleanText(result)) == 0 and i < 50:
+    while len(cleanText(result)) == 0 and i < 250:
         if judge == "kool":
             coord = ((kool[0] - i), (kool[1] - i),
                      (kool[2] + i), (kool[3] + i))
