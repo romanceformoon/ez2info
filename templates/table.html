@@ -3,6 +3,7 @@
 
 	<head>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -104,6 +105,12 @@
 			</div>
 		</div>
 
+		<script type="text/javascript">
+		$(function(){
+			$('img.lazy').lazyload();
+		});
+		</script>
+
 		<div class="section-title" data-aos="fade-in" data-aos-delay="100">
 			<h2>최상급</h2>
 		</div>
@@ -114,7 +121,7 @@
 						{% if key2 == key %}
 							<div class="col-lg-2 col-md-6 portfolio-item" id={{ "level" ~ value2 }}>
 								<div class="portfolio-wrap">
-									<img src="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid" alt="">
+									<img src="{{ url_for('static', filename='assets/img/512x512.gif') }}" data-original="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid lazy" alt="">
 									<div class="portfolio-links">
 										<a href="{{ "/detail?song=" ~ key ~ "&key=" ~ whatKey}}"><i class="bx bx-plus"></i></a>
 									</div>
@@ -136,7 +143,7 @@
 						{% if key2 == key %}
 							<div class="col-lg-2 col-md-6 portfolio-item" id={{ "level" ~ value2 }}>
 								<div class="portfolio-wrap">
-									<img src="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid" alt="">
+									<img src="{{ url_for('static', filename='assets/img/512x512.gif') }}" data-original="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid lazy" alt="">
 									<div class="portfolio-links">
 										<a href="{{ "/detail?song=" ~ key ~ "&key=" ~ whatKey}}"><i class="bx bx-plus"></i></a>
 									</div>
@@ -158,7 +165,7 @@
 						{% if key2 == key %}
 							<div class="col-lg-2 col-md-6 portfolio-item" id={{ "level" ~ value2 }}>
 								<div class="portfolio-wrap">
-									<img src="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid" alt="">
+									<img src="{{ url_for('static', filename='assets/img/512x512.gif') }}" data-original="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid lazy" alt="">
 									<div class="portfolio-links">
 										<a href="{{ "/detail?song=" ~ key ~ "&key=" ~ whatKey}}"><i class="bx bx-plus"></i></a>
 									</div>
@@ -180,7 +187,7 @@
 						{% if key2 == key %}
 							<div class="col-lg-2 col-md-6 portfolio-item" id={{ "level" ~ value2 }}>
 								<div class="portfolio-wrap">
-									<img src="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid" alt="">
+									<img src="{{ url_for('static', filename='assets/img/512x512.gif') }}" data-original="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid lazy" alt="">
 									<div class="portfolio-links">
 										<a href="{{ "/detail?song=" ~ key ~ "&key=" ~ whatKey}}"><i class="bx bx-plus"></i></a>
 									</div>
@@ -202,7 +209,7 @@
 						{% if key2 == key %}
 							<div class="col-lg-2 col-md-6 portfolio-item" id={{ "level" ~ value2 }}>
 								<div class="portfolio-wrap">
-									<img src="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid" alt="">
+									<img src="{{ url_for('static', filename='assets/img/512x512.gif') }}" data-original="{{ url_for('static', filename='assets/img/song/' ~ key ~ '.png') }}" class="img-fluid lazy" alt="">
 									<div class="portfolio-links">
 										<a href="{{ "/detail?song=" ~ key ~ "&key=" ~ whatKey}}"><i class="bx bx-plus"></i></a>
 									</div>
