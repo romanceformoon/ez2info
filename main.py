@@ -71,14 +71,28 @@ def detail():
         ranking = {}
         rank = 1
         already_list = []
+
         for row in rows:
+            kool = row[3]
+            cool = row[4]
+            good = row[5]
+            miss = row[6]
+            fail = row[7]
+            score = row[8]
+            acc = row[9]
+            combo = row[10]
+            nickname = row[11]
+            key = row[0]
+            filename = row[15]
+            notes = row[2]
+
             if rank == 11:
                 break
-            temp = row[10]
+            temp = nickname
             if temp not in already_list:
-                ranking[rank] = [row[2], row[3], row[4], row[5], row[6],
-                                 row[7], row[8], row[9], row[10], row[11], row[12], row[0], row[14]]
-                already_list.append(row[10])
+                ranking[rank] = [kool, cool, good, miss, fail,
+                                 score, acc, combo, nickname, notes, key, filename]
+                already_list.append(nickname)
                 rank += 1
 
         return render_template('detail.html', song=song, whatKey=key, ranking=ranking, link=youtube_link, name=song_name, key=key, dif=mix, pattern=pattern)
@@ -117,12 +131,26 @@ def ranking():
         ranking = {}
         rank = 1
         already_list = []
+
         for row in rows:
-            temp = row[10]
+            kool = row[3]
+            cool = row[4]
+            good = row[5]
+            miss = row[6]
+            fail = row[7]
+            score = row[8]
+            acc = row[9]
+            combo = row[10]
+            nickname = row[11]
+            key = row[0]
+            filename = row[15]
+            notes = row[2]
+
+            temp = nickname
             if temp not in already_list:
-                ranking[rank] = [row[2], row[3], row[4], row[5], row[6],
-                                 row[7], row[8], row[9], row[10], row[11], row[12], row[0], row[14]]
-                already_list.append(row[10])
+                ranking[rank] = [kool, cool, good, miss, fail,
+                                 score, acc, combo, nickname, notes, key, filename]
+                already_list.append(nickname)
                 rank += 1
 
         return render_template('ranking.html', ranking=ranking, name=song_name, key=key, dif=mix)
@@ -199,14 +227,15 @@ def ranking_add():
         combo = request.form['combo']
         nickname = request.form['nickname']
         filename = request.form['filename']
+        notes = request.form['notes']
 
         conn = sqlite3.connect("ranking.db")
         c = conn.cursor()
 
         c.executemany(
-            'INSERT INTO ranking VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            'INSERT INTO ranking VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [
-                (key, song, kool, cool, good, miss, fail, score,
+                (key, song, notes, kool, cool, good, miss, fail, score,
                  acc, combo, nickname, "", "", "", filename)
             ]
         )
@@ -229,15 +258,26 @@ def upload_file():
 
         f.save(os.path.join('static/upload', filename))
         result = ocr.work(os.path.join('static/upload', filename))
-        num_notes = result['kool'] + result['cool'] + result['good'] \
-            + result['miss'] + result['fail']
-        result['rate'] = round(int(result['score']) / (1100000 + int(num_notes)), 4) * 100
-        
-        print(result['rate'])
 
+        num_notes = result['notes']
+        sum_notes = int(result['kool']) + int(result['cool']) + \
+            int(result['good']) + int(result['miss']) + int(result['fail'])
+
+        if int(num_notes) < int(sum_notes):
+            if num_notes == sum_notes - 10:
+                if int(result['miss']) == 10:
+                    result['miss'] = "0"
+                elif int(result['fail']) == 10:
+                    result['fail'] = "0"
+
+        result['rate'] = round(int(result['score']) /
+                               (1100000 + int(num_notes)) * 100, 2)
+
+        print(result['rate'])
         print(song.upper(), result['song'].upper())
         print(SequenceMatcher(None, song.upper(),
               result['song'].upper()).ratio())
+
         if SequenceMatcher(None, song.upper(), result['song'].upper()).ratio() > 0.6:
             return render_template('data_check.html', result=result, filename=filename, song=song, key=key)
         else:

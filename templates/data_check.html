@@ -64,7 +64,7 @@
 			<h3>기록 추출 완료</h3>
               <ul>
 				<form action="/add" method="POST">
-				닉네임: <input type="text" name="nickname" required/> <br />
+				닉네임: <input type="text" name="nickname" value={{ result['nickname'] }} required/> <br />
                 {% for key, value in result.items() %}
                   <li>
                     <strong>{{ key }}: {{ value }} </strong>
@@ -83,6 +83,7 @@
 				<input type="hidden" name="song" value={{ song }} required>
 				<input type="hidden" name="key" value={{ key }} required>
 				<input type="hidden" name="filename" value={{ filename }} required>
+				<input type="hidden" name="filename" value={{ result['notes'] }} required>
                 <input type="submit">
 			</form>
             </div>

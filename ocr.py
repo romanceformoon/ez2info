@@ -14,6 +14,7 @@ score = (1445, 640, 1650, 690)
 nick = (245, 47, 445, 94)
 combo = (1178, 655, 1264, 695)
 key = (35, 136, 144, 243)
+notes = (1180, 317, 1270, 352)
 
 
 def cleanText(readData):
@@ -27,15 +28,11 @@ def cleanText(readData):
     return text
 
 
-def recalc_coord(x):
-    return (int(x[0] / 1.5), int(x[1] / 1.5), int(x[2] / 1.5), int(x[3] / 1.5))
-
-
 def preProcessJudge(image):
     img = cv2.imread(image, cv2.IMREAD_COLOR)
     canny = cv2.Canny(img, 100, 200)
-    out = canny.copy()
-    out = 255 - out
+    # out = canny.copy()
+    # out = 255 - out
 
     return canny
 
@@ -134,6 +131,7 @@ def work(filename):
         croppedScore = image1.crop(score)
         croppedNickname = image1.crop(nick)
         croppedCombo = image1.crop(combo)
+        croppedNotes = image1.crop(notes)
 
     croppedSongName.save('static/upload/crop/name.png')
     croppedKool.save('static/upload/crop/kool.png')
@@ -143,6 +141,7 @@ def work(filename):
     croppedFail.save('static/upload/crop/fail.png')
     croppedNickname.save('static/upload/crop/nick.png')
     croppedCombo.save('static/upload/crop/combo.png')
+    croppedNotes.save('static/upload/crop/notes.png')
 
     ret = {}
     print(filename)
@@ -154,6 +153,7 @@ def work(filename):
     result = pytesseract.image_to_string(
         croppedNickname, lang='kor+eng', config='--oem 3 --psm 11 -c preserve_interword_spaces=1')
     print("Nickname 인식결과: ", cleanText(result))
+    ret['nickname'] = cleanText(result)
 
     result = image2Text(croppedKool, preProcessJudge('static/upload/crop/kool.png'),
                         '--psm 6 -c tessedit_char_whitelist=0123456789', judge="kool", image=image1)
@@ -188,7 +188,12 @@ def work(filename):
     result = pytesseract.image_to_string(
         croppedCombo, config='--psm 6 -c tessedit_char_whitelist=0123456789')
     print("MaxCombo 인식결과: ", cleanText(result))
-    print('--------------------------------')
     ret['combo'] = cleanText(result)
+
+    result = pytesseract.image_to_string(
+        croppedNotes, config='--psm 6 -c tessedit_char_whitelist=0123456789')
+    print("Total Notes 인식결과: ", cleanText(result))
+    ret['notes'] = cleanText(result)
+    print('--------------------------------')
 
     return ret
