@@ -1,14 +1,16 @@
-# routes.py
 from flask import *
+from flask_cors import CORS
 import sqlite3
 from werkzeug.utils import secure_filename
 import os
 import ocr
 import random
 import string
+import json
 from difflib import SequenceMatcher
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.errorhandler(400)
@@ -215,20 +217,20 @@ def submit_page():
 @app.route('/add', methods=['POST'])
 def ranking_add():
     if request.method == 'POST':
-        song = request.form['song']
-        key = request.form['key']
-        kool = request.form['kool']
-        cool = request.form['cool']
-        good = request.form['good']
-        miss = request.form['miss']
-        fail = request.form['fail']
-        score = request.form['score']
-        acc = request.form['rate']
-        combo = request.form['combo']
-        nickname = request.form['nickname']
-        filename = request.form['filename']
-        notes = request.form['notes']
-
+        data = request.get_json()
+        song = data['song']
+        key = data['key']
+        kool = data['kool']
+        cool = data['cool']
+        good = data['good']
+        miss = data['miss']
+        fail = data['fail']
+        score = data['score']
+        acc = data['rate']
+        combo = data['combo']
+        nickname = data['nickname']
+        filename = data['filename']
+        notes = data['notes']
         conn = sqlite3.connect("ranking.db")
         c = conn.cursor()
 
@@ -273,16 +275,24 @@ def upload_file():
         result['rate'] = round(int(result['score']) /
                                (1100000 + int(num_notes)) * 100, 2)
 
+        result['key'] = key
+        result['filename'] = filename
+
         print(result['rate'])
         print(song.upper(), result['song'].upper())
         print(SequenceMatcher(None, song.upper(),
               result['song'].upper()).ratio())
 
         if SequenceMatcher(None, song.upper(), result['song'].upper()).ratio() > 0.6:
-            return render_template('data_check.html', result=result, filename=filename, song=song, key=key)
+            # return render_template('data_check.html', result=result, filename=filename, song=song, key=key)
+            result['song'] = song
+            result['success'] = "success"
+            return json.dumps(result)
         else:
             os.remove(os.path.join('static/upload', filename))
-            return "곡명이 일치하지 않습니다."
+            print("곡명이 일치하지 않습니다.")
+            result['success'] = "fail"
+            return json.dumps(result)
 
 
 if __name__ == '__main__':

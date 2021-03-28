@@ -55,25 +55,13 @@
 
 
   <main id="main">
-
-    <!-- ======= Breadcrumbs Section ======= -->
-    <section class="breadcrumbs">
-      <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center">
-          <h2>{{ name }} {{ key }} KEY {{ dif }}</h2>
-        </div>
-
-      </div>
-    </section><!-- Breadcrumbs Section -->
-
     <!-- ======= Portfolio Details Section ======= -->
     <section id="portfolio-details" class="portfolio-details">
       <div class="container">
         <div class="row gy-4">
 
             <div class="portfolio-info">
-              <h3>랭킹</h3>
+              <h3>{{ name }} {{ key }} KEY {{ dif }} 랭킹</h3>
               <ul>
                 {% for key, value in ranking.items() %}
                   <li>

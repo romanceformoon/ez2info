@@ -889,3 +889,22 @@ a.tip:hover span {
   left: 43%;
   z-index: 101;
 }
+
+
+.content {
+  outline: 2px dashed #92b0b3;
+  outline-offset: -10px;
+  text-align: center;
+  padding-top: 169px;
+  transition: all .15s ease-in-out;
+  width: 600px;
+  height: 338px;
+  background-color: gray;
+}
+
+.content img,
+.content video {
+  width: 100%;
+  height: 100%;
+  display: none;
+}

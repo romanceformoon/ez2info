@@ -56,75 +56,124 @@
 
   <main id="main">
 
-    <!-- ======= Breadcrumbs Section ======= -->
-    <section class="breadcrumbs">
-      <div class="container">
-
-        <div class="d-flex justify-content-between align-items-center">
-          <h2>{{ name }} {{ key }} KEY {{ dif }}</h2>
-        </div>
-
-      </div>
-    </section><!-- Breadcrumbs Section -->
-
 	<script>
-
 		$(document).ready(function() {
-
-		$('#loading').hide();
-		$('#trans').submit(function(){
-			$('#loading').show();
-			return true;
-			});
+			$('#loading').hide();
 		});
-
 	</script>
 
     <!-- ======= Portfolio Details Section ======= -->
     <section id="portfolio-details" class="portfolio-details">
       <div class="container">
         <div class="row gy-4">
-
             <div class="portfolio-info">
-              <h3>랭킹 등록</h3>
+              <h3>{{ name }} {{ key }} KEY {{ dif }} 랭킹 등록</h3>
               <ul>
 				<form id="trans" action="/upload" method="POST" enctype="multipart/form-data">
-					<input type="file" name="file">
-					<input type="hidden" name="song" value={{ song }} required>
-					<input type="hidden" name="key" value={{ key }} required>
-					<input type="submit">
+					<div class="content">
+						업로드할 스크린샷을 드래그하세요.
+					</div>
+					<input type="hidden" id="song" name="song" value={{ song }} required>
+					<input type="hidden" id="key" name="key" value={{ key }} required>
 				</form>
 				
 				<div id="loading" style="margin-left: 0px;">
 					<img src="{{ url_for('static', filename='assets/img/loading.gif') }}">
 					<p>Waiting for a seconds..</p>
 				</div>
-
-				<!--
-                <form action="/add" method="POST">
-					닉네임 : <input type="text" name="nickname" required/> <br />
-					Kool : <input type="text" name="kool" required/> <br />
-                	Cool : <input type="text" name="cool" required/> <br />
-					Good : <input type="text" name="good" required/> <br />
-					Miss : <input type="text" name="miss" required/> <br />
-					Fail : <input type="text" name="fail" required/> <br />
-					Score : <input type="text" name="score" required/> <br />
-					Rate : <input type="text" name="rate" required/> <br />
-					MaxCombo : <input type="text" name="combo" required/> <br />
-					<input type="hidden" name="song" value={{ song }} required>
-					<input type="hidden" name="key" value={{ key }} required>
-                	<input type="submit" value="등록">
-				</form>
-				-->
+				
 
               </ul>
             </div>
 
         </div>
       </div>
+<script>
+$('.content')
+  .on("dragover", dragOver)
+  .on("dragleave", dragOver)
+  .on("drop", uploadFiles);
 
-	   
+function dragOver(e){
+  e.stopPropagation();
+  e.preventDefault();
+  if (e.type == "dragover") {
+    $(e.target).css({
+      "background-color": "black",
+      "outline-offset": "-20px"
+    });
+  } else {
+      $(e.target).css({
+      "background-color": "gray",
+      "outline-offset": "-10px"
+    });
+    }
+}
 
+function uploadFiles(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    dragOver(e);
+  
+    e.dataTransfer = e.originalEvent.dataTransfer;
+    var files = e.target.files || e.dataTransfer.files;
+
+    if (files.length > 1) {
+        alert('하나만 올려라.');
+        return;
+    }
+    if (files[0].type.match(/image.*/)) {
+                $(e.target).css({
+            "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
+            "outline": "none",
+            "background-size": "100% 100%"
+        });
+    }else{
+      alert('이미지가 아닙니다.');
+      return;
+    }
+
+	$('#loading').show();
+
+    // var form_data = new FormData($('#trans')[0]);
+	var formData = new FormData(); 
+	formData.append("song", $("#song").val()); 
+	formData.append("key", $("#key").val()); 
+	formData.append("file", files[0]);
+
+	$.ajax({
+        url: '/upload',
+        processData: false,
+        contentType: false,
+        data: formData,
+        type: 'POST',
+        success: function(result){
+			var handler = JSON.parse(result)
+			$.ajax({
+				url: '{{ url_for("ranking_add") }}',
+				processData: false,
+				contentType: "application/json",
+				data: result,
+				dataType: 'JSON',
+				type: 'POST',
+				success: function(result2){
+					alert("success")
+				}
+			});
+			if(handler.success == "success"){
+				alert("업로드 성공!")
+			}
+			else{
+				alert("곡명이 일치하지 않습니다.")
+			}
+			
+			$('#loading').hide();
+			location.reload();
+        }
+    });
+}
+
+</script>
     </section><!-- End Portfolio Details Section -->
 
   </main><!-- End #main -->
