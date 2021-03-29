@@ -66,15 +66,23 @@
     <section id="portfolio-details" class="portfolio-details">
       <div class="container">
         <div class="row gy-4">
-            <div class="portfolio-info">
+            <div class="portfolio-info ranking-container">
               <h3>{{ name }} {{ key }} KEY {{ dif }} 랭킹 등록</h3>
               <ul>
+				  <p>업로드할 스크린샷을 드래그하세요.</p>
 				<form id="trans" action="/upload" method="POST" enctype="multipart/form-data">
 					<div class="content">
-						업로드할 스크린샷을 드래그하세요.
 					</div>
 					<input type="hidden" id="song" name="song" value={{ song }} required>
 					<input type="hidden" id="key" name="key" value={{ key }} required>
+				</form>
+				
+				<p><br>혹은 업로드할 파일을 직접 파일을 선택하세요.</p>
+				<form method="POST" enctype="multipart/form-data" id="uploadForm">
+					<input type="file" id="file" name="file" />
+					<input type="hidden" id="song" name="song" value={{ song }} required>
+					<input type="hidden" id="key" name="key" value={{ key }} required>
+					<!-- <button id='btnUpload' class="btn btn-info portfolio-lightbox" style="color: #fff">업로드</button> -->
 				</form>
 				
 				<div id="loading" style="margin-left: 0px;">
@@ -172,6 +180,50 @@ function uploadFiles(e) {
         }
     });
 }
+
+//$('#btnUpload').on('click', function(event) {
+$('#file').bind('change', function() {
+    event.preventDefault();
+
+    $('#loading').show();
+
+    var form = $('#uploadForm')[0]
+    var data = new FormData(form);
+    
+    $('#btnUpload').prop('disabled', true);
+	
+    $.ajax({
+        type: "POST",
+        url: "/upload",
+        data: data,
+        processData: false,
+        contentType: false,
+        success: function (result3) {
+        	$('#btnUpload').prop('disabled', false);
+        	var handler2 = JSON.parse(result3)
+			$.ajax({
+				url: '{{ url_for("ranking_add") }}',
+				processData: false,
+				contentType: "application/json",
+				data: result3,
+				dataType: 'JSON',
+				type: 'POST',
+				success: function(result4){
+					alert("success")
+				}
+			});
+			if(handler2.success == "success"){
+				alert("업로드 성공!")
+			}
+			else{
+				alert("곡명이 일치하지 않습니다.")
+			}
+			
+			$('#loading').hide();
+			location.reload();
+        },
+    });
+})
 
 </script>
     </section><!-- End Portfolio Details Section -->
