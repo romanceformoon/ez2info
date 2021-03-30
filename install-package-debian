@@ -1,0 +1,8 @@
+#! /bin/bash
+echo "Shell Script Started"
+add-apt-repository universe
+apt-get update
+apt-get install python3-pip
+apt-get install libgl1-mesa-glx
+apt-get install tesseract-ocr
+apt-get install tesseract-ocr-script-hang tesseract-ocr-script-hang-vert
