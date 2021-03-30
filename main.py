@@ -265,16 +265,32 @@ def upload_file():
         sum_notes = int(result['kool']) + int(result['cool']) + \
             int(result['good']) + int(result['miss']) + int(result['fail'])
 
-        if int(num_notes) < int(sum_notes):
-            if num_notes == sum_notes - 10:
-                if int(result['miss']) == 10:
-                    result['miss'] = "0"
-                elif int(result['fail']) == 10:
-                    result['fail'] = "0"
+        if int(num_notes) < int(sum_notes) and int(result['miss']) == 10:
+            print("Change Miss 10 to 0")
+            result['miss'] = "0"
+            sum_notes = int(result['kool']) + int(result['cool']) + \
+                int(result['good']) + int(result['miss']) + int(result['fail'])
+
+        if int(num_notes) < int(sum_notes) and int(result['fail']) == 10:
+            print("Change Fail 10 to 0")
+            result['fail'] = "0"
+            sum_notes = int(result['kool']) + int(result['cool']) + \
+                int(result['good']) + int(result['miss']) + int(result['fail'])
+
+        if int(num_notes) < int(sum_notes) and int(result['good']) == 10:
+            print("Change Good 10 to 0")
+            result['good'] = "0"
+            sum_notes = int(result['kool']) + int(result['cool']) + \
+                int(result['good']) + int(result['miss']) + int(result['fail'])
+
+        if int(num_notes) < int(sum_notes) and int(result['cool']) == 10:
+            print("Change Cool 10 to 0")
+            result['miss'] = "0"
+            sum_notes = int(result['kool']) + int(result['cool']) + \
+                int(result['good']) + int(result['miss']) + int(result['fail'])
 
         result['rate'] = round(int(result['score']) /
                                (1100000 + int(num_notes)) * 100, 2)
-
         result['key'] = key
         result['filename'] = filename
 
